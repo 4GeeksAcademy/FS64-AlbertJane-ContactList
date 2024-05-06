@@ -1,43 +1,45 @@
+import { agendaDispatcher } from "./dispatchers/agendaDispatcher.jsx";
+import { contactDispatcher } from "./dispatchers/contactDispatcher.jsx";
+
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
-			demo: [
-				{
-					title: "FIRST",
-					background: "white",
-					initial: "white"
-				},
-				{
-					title: "SECOND",
-					background: "white",
-					initial: "white"
-				}
-			]
+			agenda: {
+				agendaList: [],
+				selectedAgenda: ''
+			},
+			contacts: {
+				contactList: [],
+				
+			}
+			
+			
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
-			exampleFunction: () => {
-				getActions().changeColor(0, "green");
-			},
-			loadSomeData: () => {
-				/**
-					fetch().then().then(data => setStore({ "foo": data.bar }))
-				*/
-			},
-			changeColor: (index, color) => {
-				//get the store
+			getAllAgendas: async () => {
+				const agendaList = await agendaDispatcher.getAll();
 				const store = getStore();
+				setStore({...store, agendaList})
+			},
+			getAgenda: async  (slug) => {
 
-				//we have to loop the entire demo array to look for the respective index
-				//and change its color
-				const demo = store.demo.map((elm, i) => {
-					if (i === index) elm.background = color;
-					return elm;
-				});
-
-				//reset the global store
-				setStore({ demo: demo });
+				const {slug: selectedAgenda} = await agendaDispatcher.get(slug);
+				const store = getStore()
+				setStore({...store, agenda: {...store.agenda, selectedAgenda}});
+			},
+			createAgenda: async (slug) => {
+				await agendaDispatcher.post(slug)
+			},
+			deleteAgenda: async (slug) => {
+				await agendaDispatcher.delete(slug);
+			},
+			getAllContacts: async (slug) => {
+				const {contacts: contactList} = await contactDispatcher.get(slug);
+				const store = getStore();
+				setStore({...store, contacts: {...store.contacts, contactList}})
 			}
+
 		}
 	};
 };
