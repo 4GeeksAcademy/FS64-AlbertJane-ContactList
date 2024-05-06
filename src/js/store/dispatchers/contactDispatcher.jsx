@@ -20,6 +20,14 @@ export const contactDispatcher = {
         })
     },
 
+    put: async (slug,id) => {
+
+
+        //TO DO
+
+        
+    },
+
     delete: async (slug,contactId) => {
         await fetch(`https://playground.4geeks.com/contact/agendas/${slug}/contacts/${contactId}
         `,{

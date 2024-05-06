@@ -10,7 +10,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 			contacts: {
 				contactList: [],
-				
 			}
 			
 			
